@@ -1,0 +1,34 @@
+// ==UserScript==
+// @name         Twitter Space Snap - halilnevzat.com
+// @version      1.0
+// @description  Space bar snap scroll by @halilnevzat07 halilnevzat.com
+// @match        https://x.com/*
+// @match        https://twitter.com/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+    console.log("halilnevzat.com | x.com/halilnevzat07 - Snap Engine Active");
+
+    window.addEventListener('keydown', function(e) {
+        if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName) || document.activeElement.isContentEditable) return;
+
+        if (e.code === 'Space') {
+            e.preventDefault();
+            const tweets = document.querySelectorAll('div[data-testid="cellInnerDiv"]');
+            const headerHeight = 60;
+
+            for (let tweet of tweets) {
+                const rect = tweet.getBoundingClientRect();
+                if (rect.top > headerHeight + 15) {
+                    window.scrollTo({
+                        top: rect.top + window.pageYOffset - headerHeight,
+                        behavior: 'smooth'
+                    });
+                    break;
+                }
+            }
+        }
+    }, true);
+})();
