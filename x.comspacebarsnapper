@@ -9,24 +9,34 @@
 
 (function() {
     'use strict';
-    console.log("halilnevzat.com | x.com/halilnevzat07 - Snap Engine Active");
+    console.log("halilnevzat.com | x.com/halilnevzat07 - Dual Snap Active");
 
     window.addEventListener('keydown', function(e) {
         if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName) || document.activeElement.isContentEditable) return;
 
         if (e.code === 'Space') {
             e.preventDefault();
-            const tweets = document.querySelectorAll('div[data-testid="cellInnerDiv"]');
-            const headerHeight = 60;
+            const tweets = Array.from(document.querySelectorAll('div[data-testid="cellInnerDiv"]'));
+            const headerHeight = 65; // Bir tık pay bıraktım
 
-            for (let tweet of tweets) {
-                const rect = tweet.getBoundingClientRect();
-                if (rect.top > headerHeight + 15) {
-                    window.scrollTo({
-                        top: rect.top + window.pageYOffset - headerHeight,
-                        behavior: 'smooth'
-                    });
-                    break;
+            if (e.shiftKey) {
+                // GERİ GİT (Shift + Space)
+                const reversedTweets = tweets.reverse();
+                for (let tweet of reversedTweets) {
+                    const rect = tweet.getBoundingClientRect();
+                    if (rect.top < headerHeight - 15) {
+                        window.scrollTo({ top: rect.top + window.scrollY - headerHeight, behavior: 'smooth' });
+                        break;
+                    }
+                }
+            } else {
+                // İLERİ GİT (Space)
+                for (let tweet of tweets) {
+                    const rect = tweet.getBoundingClientRect();
+                    if (rect.top > headerHeight + 15) {
+                        window.scrollTo({ top: rect.top + window.scrollY - headerHeight, behavior: 'smooth' });
+                        break;
+                    }
                 }
             }
         }
